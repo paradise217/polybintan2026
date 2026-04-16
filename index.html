@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bintan Trip 2026</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --ocean: #0077b6;
+            --sky: #00b4d8;
+            --sunset: #f77f00;
+            --green: #52b788;
+            --purple: #7c3aed;
+            --white: #ffffff;
+            --light-bg: #f0f9ff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -1px rgba(0,0,0,0.04);
+            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--light-bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            background: linear-gradient(145deg, #023e8a 0%, #0077b6 50%, #0096c7 100%);
+            color: white;
+            padding: 48px 20px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -2px; left: 0; right: 0;
+            height: 60px;
+            background: var(--light-bg);
+            clip-path: ellipse(55% 100% at 50% 100%);
+        }
+        .hero-emoji { font-size: 3rem; display: block; margin-bottom: 8px; }
+        .hero h1 { font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
+        .hero-sub { font-size: 1rem; opacity: 0.8; margin-bottom: 28px; }
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .stat {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.25);
+            padding: 12px 18px;
+            border-radius: 14px;
+            min-width: 120px;
+        }
+        .stat-value { font-size: 1.1rem; font-weight: 700; display: block; }
+        .stat-label { font-size: 0.7rem; opacity: 0.75; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* ── CONTAINER ── */
+        .container { max-width: 960px; margin: 0 auto; padding: 0 16px 80px; }
+
+        /* ── ALERT ── */
+        .alert {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 14px 18px;
+            border-radius: 14px;
+            margin: 24px 0 0;
+            font-size: 0.875rem;
+        }
+        .alert-warn { background: #fff8e1; border: 1px solid #ffc107; color: #664d03; }
+        .alert-danger { background: #fff0f0; border: 1px solid #f87171; color: #7f1d1d; }
+        .alert-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+
+        /* ── TABS ── */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin: 24px 0 20px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: none;
+        }
+        .tabs::-webkit-scrollbar { display: none; }
+        .tab {
+            padding: 9px 18px;
+            border-radius: 999px;
+            border: 2px solid var(--ocean);
+            background: transparent;
+            color: var(--ocean);
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 0.85rem;
+            transition: all 0.18s;
+        }
+        .tab.active { background: var(--ocean); color: white; }
+        .tab:hover:not(.active) { background: #e0f2fe; }
+
+        /* ── DAY VIEWS ── */
+        .day-view { display: none; }
+        .day-view.active { display: block; }
+
+        /* ── TIMELINE ── */
+        .timeline { position: relative; padding-left: 28px; }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 9px; top: 20px; bottom: 20px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--ocean), var(--sky), #90e0ef);
+            border-radius: 2px;
+        }
+        .tl-item { position: relative; margin-bottom: 10px; }
+        .tl-item::before {
+            content: '';
+            position: absolute;
+            left: -23px; top: 20px;
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid var(--ocean);
+            box-shadow: 0 0 0 3px #e0f2fe;
+            z-index: 1;
+        }
+        .tl-item.priority::before { border-color: var(--sunset); box-shadow: 0 0 0 3px #fff3e0; }
+        .tl-item.massage::before { border-color: var(--purple); box-shadow: 0 0 0 3px #f5f3ff; }
+        .tl-item.warn::before { border-color: #f59e0b; box-shadow: 0 0 0 3px #fffbeb; }
+
+        .tl-card {
+            background: white;
+            border-radius: 16px;
+            padding: 15px 18px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid #e2e8f0;
+        }
+        .tl-card.priority { border-left-color: var(--sunset); }
+        .tl-card.massage { border-left-color: var(--purple); background: #faf5ff; }
+        .tl-card.warn { border-left-color: #f59e0b; background: #fffbeb; }
+        .tl-card.info { border-left-color: var(--ocean); }
+        .tl-card.kids { border-left-color: var(--green); }
+
+        .tl-time { font-size: 0.72rem; font-weight: 700; color: var(--ocean); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 3px; }
+        .tl-title { font-size: 1rem; font-weight: 700; margin-bottom: 3px; }
+        .tl-desc { font-size: 0.84rem; color: var(--text-muted); }
+
+        .badges { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
+        .badge {
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 999px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .b-priority { background: #fff3e0; color: #c2410c; }
+        .b-kids { background: #dcfce7; color: #166534; }
+        .b-included { background: #dbeafe; color: #1e40af; }
+        .b-optional { background: #f3e8ff; color: #6b21a8; }
+        .b-warn { background: #fef9c3; color: #854d0e; }
+        .b-note { background: #f1f5f9; color: #475569; }
+
+        .price-pill {
+            margin-top: 9px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+        .price-pill .after { color: #16a34a; font-weight: 700; }
+        .price-pill .before { text-decoration: line-through; color: #94a3b8; margin-left: 4px; }
+
+        .sub-list { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e2e8f0; }
+        .sub-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.81rem;
+            padding: 3px 0;
+            color: var(--text-muted);
+        }
+        .sub-row .sub-price { color: #16a34a; font-weight: 600; white-space: nowrap; margin-left: 8px; }
+
+        /* ── SECTION TITLE ── */
+        .section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--ocean);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 28px 0 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(to right, #bae6fd, transparent);
+            border-radius: 2px;
+        }
+
+        /* ── ACTIVITY TABLE ── */
+        .act-card {
+            background: white;
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 14px;
+        }
+        .act-card-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-bg);
+        }
+        .act-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .act-row:last-child { border-bottom: none; }
+        .act-icon {
+            width: 38px; height: 38px;
+            background: var(--light-bg);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        .act-info { flex: 1; min-width: 0; }
+        .act-name { font-weight: 600; font-size: 0.9rem; }
+        .act-dur { font-size: 0.77rem; color: var(--text-muted); }
+        .act-prices { text-align: right; flex-shrink: 0; }
+        .ap-after { font-weight: 700; color: #16a34a; font-size: 0.88rem; }
+        .ap-sgd { font-size: 0.72rem; color: var(--text-muted); }
+        .ap-before { font-size: 0.72rem; color: #94a3b8; text-decoration: line-through; }
+
+        /* ── DISCOUNT BANNER ── */
+        .discount-banner {
+            background: linear-gradient(135deg, #166534, #15803d);
+            color: white;
+            border-radius: 14px;
+            padding: 12px 18px;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        /* ── INFO GRID ── */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 14px;
+            margin-top: 4px;
+        }
+        .info-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        .info-card h3 {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--light-bg);
+        }
+        .info-card p { font-size: 0.875rem; margin-bottom: 5px; }
+        .info-card ul { padding-left: 16px; }
+        .info-card li { font-size: 0.875rem; margin-bottom: 4px; }
+
+        /* ── PAX PILLS ── */
+        .pax-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+        .pax-pill {
+            font-size: 0.78rem;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-weight: 600;
+        }
+        .pax-adult { background: #dbeafe; color: #1e40af; }
+        .pax-child { background: #dcfce7; color: #166534; }
+
+        @media (max-width: 580px) {
+            .hero { padding: 36px 16px 72px; }
+            .act-row { gap: 8px; }
+            .sub-row { flex-direction: column; align-items: flex-start; gap: 2px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+    <span class="hero-emoji">🌴</span>
+    <h1>Bintan Trip 2026</h1>
+    <p class="hero-sub">Natra Bintan, A Tribute Portfolio Resort &middot; Lagoi, Bintan Island</p>
+    <div class="hero-stats">
+        <div class="stat">
+            <span class="stat-value">30 May – 1 Jun</span>
+            <span class="stat-label">Trip Dates</span>
+        </div>
+        <div class="stat">
+            <span class="stat-value">14A + 5K</span>
+            <span class="stat-label">19 Pax Total</span>
+        </div>
+        <div class="stat">
+            <span class="stat-value">7 Rooms</span>
+            <span class="stat-label">2 Nights</span>
+        </div>
+        <div class="stat">
+            <span class="stat-value">20% Off</span>
+            <span class="stat-label">Hotel Guest Rate</span>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Warning -->
+    <div class="alert alert-danger">
+        <span class="alert-icon">🚨</span>
+        <div><strong>Tight Monday morning:</strong> Ferry departs 11:35 but check-out is before 12:00. Transfer takes ~20 min. <strong>Pack bags on Sunday night</strong> and aim to leave the resort by 10:45.</div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab active" onclick="showView('day1', this)">Day 1 · Sat 30 May</button>
+        <button class="tab" onclick="showView('day2', this)">Day 2 · Sun 31 May</button>
+        <button class="tab" onclick="showView('day3', this)">Day 3 · Mon 1 Jun</button>
+        <button class="tab" onclick="showView('activities', this)">Activities & Prices</button>
+        <button class="tab" onclick="showView('group', this)">Group Info</button>
+    </div>
+
+    <!-- ══════════════════ DAY 1 ══════════════════ -->
+    <div id="day1" class="day-view active">
+        <div class="timeline">
+
+            <div class="tl-item">
+                <div class="tl-card info">
+                    <div class="tl-time">12:00</div>
+                    <div class="tl-title">🇸🇬 Meet at Tanah Merah Ferry Terminal, Singapore</div>
+                    <div class="tl-desc">Assemble at Tanah Merah Ferry Terminal by 12:00. Complete check-in and immigration before boarding.</div>
+                </div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-card info">
+                    <div class="tl-time">14:00 – 14:10</div>
+                    <div class="tl-title">⛴ Ferry Departs — Singapore → Bintan</div>
+                    <div class="tl-desc">Economy class · Booking Ref <strong>2142797</strong> (14 pax) &amp; <strong>2142801</strong> (5 pax). Arrives Bandar Bintan Telani ~14:10.</div>
+                </div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-card">
+                    <div class="tl-time">14:15 – 15:00</div>
+                    <div class="tl-title">🚐 Transfer to Natra Bintan Resort</div>
+                    <div class="tl-desc">~20-min transfer to Jalan Raya Haji Km 01, Kawasan Pariwisata, Sebong Lagoi. Check-in opens at 15:00.</div>
+                </div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-card">
+                    <div class="tl-time">15:00</div>
+                    <div class="tl-title">🏨 Check-In · Natra Bintan</div>
+                    <div class="tl-desc">7 rooms · Guest Room, 1 King, Sofa Bed, Garden View. Drop bags and get settled before heading out.</div>
+                    <div class="badges">
+                        <span class="badge b-included">After 15:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tl-item priority">
+                <div class="tl-card priority">
+                    <div class="tl-time">15:30 – 17:30</div>
+                    <div class="tl-title">🌊 Water Sports — Treasure Bay Lagoon</div>
+                    <div class="tl-desc">Jump straight into the lagoon! Split adults and kids across activities. All prices after 20% hotel discount. Alternatively, book a massage session at the resort spa.</div>
+                    <div class="badges">
+                        <span class="badge b-priority">⭐ Priority</span>
+                        <span class="badge b-kids">Kids-friendly options</span>
+                        <span class="badge b-optional">Or: Massage</span>
+                    </div>
+                    <div class="sub-list">
+                        <div class="sub-row"><span>🎿 Cable Ski (15 min/pax)</span><span class="sub-price">IDR 320,000 (~SGD 28)</span></div>
+                        <div class="sub-row"><span>🚣 Cable Tube (7 rounds/pax)</span><span class="sub-price">IDR 200,000 (~SGD 17)</span></div>
+                        <div class="sub-row"><span>🏄 Water Sport Park (60 min/pax)</span><span class="sub-price">IDR 256,000 (~SGD 22)</span></div>
+                        <div class="sub-row"><span>🛶 Lagoon Kayak (60 min/unit)</span><span class="sub-price">IDR 336,000 (~SGD 29)</span></div>
+                        <div class="sub-row"><span>🛝 Slip &amp; Slide (unlimited day)</span><span class="sub-price">IDR 160,000 (~SGD 14)</span></div>
+                        <div class="sub-row"><span>⛵ Family Pedal Boat · Kids (30 min/unit)</span><span class="sub-price">IDR 336,000 (~SGD 29)</span></div>
+                        <div class="sub-row"><span>💥 Bumper Boat · Kids (30 min/unit)</span><span class="sub-price">IDR 200,000 (~SGD 17)</span></div>
+                        <div class="sub-row"><span>🚲 Water Tricycle · Kids (30 min/unit)</span><span class="sub-price">IDR 336,000 (~SGD 29)</span></div>
+                        <div class="sub-row" style="border-top:1px dashed #e2e8f0;margin-top:6px;padding-top:6px;"><span>💆 Body Massage (no discount)</span><span class="sub-price">IDR 600,000–1,000,000/pax</span></div>
+                        <div class="sub-row"><span>✨ Body Treatment (no discount)</span><span class="sub-price">IDR 1,250,000/pax</span></div>
+                        <div class="sub-row"><span style="font-size:0.75rem;color:#94a3b8;">↳ <a href="https://online.flippingbook.com/view/66129192/2/" target="_blank" style="color:#0077b6;">View full massage menu</a></span><span></span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-card" style="border-left-color:#c0392b;">
+                    <div class="tl-time">18:00</div>
+                    <div class="tl-title">🔥 BBQ at Tent Dinner</div>
+                    <div class="tl-desc">Group dinner at the resort's tent-side BBQ. Self-service grilling with your choice of menu. Additional items available at extra cost.</div>
+                    <div class="badges">
+                        <span class="badge" style="background:#fff0f0;color:#c0392b;">Tent BBQ</span>
+                        <span class="badge b-note">Self-service · Hire assistant at extra cost</span>
+                    </div>
+                    <div class="sub-list">
+                        <div class="sub-row"><span>🥩 Western Menu (Rib Eye, Lamb, Salmon, Prawn…)</span><span class="sub-price">IDR 1,260,000++ / 2 pax (~SGD 110)</span></div>
+                        <div class="sub-row"><span>🍢 Indonesian Menu (Satay, Pepes, Otak-otak…)</span><span class="sub-price">IDR 744,000++ / 2 pax (~SGD 65)</span></div>
+                        <div class="sub-row"><span>🥦 Vegetarian Menu (Tofu, Mushroom, Bean Curd…)</span><span class="sub-price">IDR 300,000++ / 2 pax (~SGD 26)</span></div>
+                        <div class="sub-row" style="font-size:0.77rem;color:#94a3b8;padding-top:4px;"><span>All menus include sides, sauces &amp; dessert. Add-ons available per portion.</span><span></span></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ══════════════════ DAY 2 ══════════════════ -->
+    <div id="day2" class="day-view">
+        <div class="alert alert-warn" style="margin: 0 0 16px;">
+            <span class="alert-icon">🎒</span>
+            <div>Pack your bags <strong>tonight</strong> before sleeping — Monday checkout must be before 12:00 and the ferry departs at 11:35.</div>
+        </div>
+        <div class="timeline">
+
+            <div class="tl-item">
+                <div class="tl-card">
+                    <div class="tl-time">07:30 – 09:00</div>
+                    <div class="tl-title">🍳 Breakfast at Natra Bintan</div>
+                    <div class="tl-desc">Breakfast included for all rooms (2 guests per room). Fuel up for a full day of activities!</div>
+                    <div class="badges">
+                        <span class="badge b-included">Included</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tl-item priority">
+                <div class="tl-card priority">
+                    <div class="tl-time">09:00 – 11:00</div>
+                    <div class="tl-title">🏍 ATV Off-Road Trail</div>
+                    <div class="tl-desc">Start the day with a thrilling ATV ride through the off-road trails. Book multiple vehicles for the group.</div>
+                    <div class="badges">
+                        <span class="badge b-priority">⭐ Priority</span>
+                        <span class="badge b-note">Per vehicle, not per pax</span>
+                    </div>
+                    <div class="price-pill">
+                        60 min/vehicle: <span class="after">IDR 1,200,000 (~SGD 104)</span> <span class="before">IDR 1,500,000</span>
+                        &nbsp;|&nbsp; 25 min/vehicle: <span class="after">IDR 720,000 (~SGD 63)</span> <span class="before">IDR 900,000</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-card">
+                    <div class="tl-time">12:00 – 13:30</div>
+                    <div class="tl-title">🍜 Lunch Break</div>
+                    <div class="tl-desc">Rest and refuel at Treasure Bay or resort restaurants.</div>
+                </div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-card" style="border-left-color:#0077b6;">
+                    <div class="tl-time">13:30 – 17:30</div>
+                    <div class="tl-title">🎉 Free Choice Activities</div>
+                    <div class="tl-desc">Pick what you like — mix and match across the afternoon. All activity prices after 20% hotel discount unless noted.</div>
+                    <div class="sub-list">
+                        <div class="sub-row" style="font-size:0.77rem;font-weight:700;color:#0077b6;padding-bottom:2px;"><span>🌊 Water Sports</span><span></span></div>
+                        <div class="sub-row"><span>🎿 Cable Ski (15 min/pax)</span><span class="sub-price">IDR 320,000 (~SGD 28)</span></div>
+                        <div class="sub-row"><span>🚣 Cable Tube (7 rounds/pax)</span><span class="sub-price">IDR 200,000 (~SGD 17)</span></div>
+                        <div class="sub-row"><span>🏄 Water Sport Park (60 min/pax)</span><span class="sub-price">IDR 256,000 (~SGD 22)</span></div>
+                        <div class="sub-row"><span>🛶 Lagoon Kayak (60 min/unit)</span><span class="sub-price">IDR 336,000 (~SGD 29)</span></div>
+                        <div class="sub-row"><span>🏄 Stand Up Paddle (30 min/unit)</span><span class="sub-price">IDR 200,000 (~SGD 17)</span></div>
+                        <div class="sub-row"><span>🛝 Slip &amp; Slide (unlimited day)</span><span class="sub-price">IDR 160,000 (~SGD 14)</span></div>
+                        <div class="sub-row"><span>🦢 Single Float (60 min/unit)</span><span class="sub-price">IDR 144,000 (~SGD 13)</span></div>
+                        <div class="sub-row"><span>💑 Couple Float (60 min/unit)</span><span class="sub-price">IDR 200,000 (~SGD 17)</span></div>
+
+                        <div class="sub-row" style="font-size:0.77rem;font-weight:700;color:#0077b6;padding-top:8px;padding-bottom:2px;"><span>🌿 Mangrove &amp; Nature</span><span></span></div>
+                        <div class="sub-row"><span>🌿 Mangrove Day Tour (45 min/pax)</span><span class="sub-price">IDR 184,000 (~SGD 16)</span></div>
+                        <div class="sub-row"><span>🛶 Mangrove Kayak (60 min/unit)</span><span class="sub-price">IDR 336,000 (~SGD 29)</span></div>
+                        <div class="sub-row"><span>🌱 Organic Park Tour · Sun only</span><span class="sub-price">IDR 104,000 adult / IDR 72,000 child</span></div>
+                        <div class="sub-row" style="font-size:0.75rem;color:#94a3b8;"><span>↳ Sessions: 09:30 / 11:00 / 13:00 · Guided tour, honey tasting, tea</span><span></span></div>
+
+                        <div class="sub-row" style="font-size:0.77rem;font-weight:700;color:#0077b6;padding-top:8px;padding-bottom:2px;"><span>🛵 Land Activities</span><span></span></div>
+                        <div class="sub-row"><span>🛵 3-Wheels E-Scooter (60 min/unit)</span><span class="sub-price">IDR 112,000 (~SGD 10)</span></div>
+                        <div class="sub-row"><span>🛵 2-Wheels E-Scooter (60 min/unit)</span><span class="sub-price">IDR 176,000 (~SGD 15)</span></div>
+                        <div class="sub-row"><span>🏹 Archery (20 arrows)</span><span class="sub-price">IDR 192,000 (~SGD 17)</span></div>
+                        <div class="sub-row"><span>🚗 Classic Car (1 round/pax)</span><span class="sub-price">IDR 64,000 (~SGD 6)</span></div>
+
+                        <div class="sub-row" style="font-size:0.77rem;font-weight:700;color:#166534;padding-top:8px;padding-bottom:2px;"><span>👦 Kids Activities</span><span></span></div>
+                        <div class="sub-row"><span>🏍 Junior ATV (25 min)</span><span class="sub-price">IDR 200,000 (~SGD 17)</span></div>
+                        <div class="sub-row"><span>🏎 Prince Moto (30 min)</span><span class="sub-price">IDR 200,000 (~SGD 17)</span></div>
+                        <div class="sub-row"><span>🎨 Art &amp; Craft (10 min/item)</span><span class="sub-price">IDR 100,000 (~SGD 9)</span></div>
+                        <div class="sub-row"><span>⛵ Family Pedal Boat (30 min/unit)</span><span class="sub-price">IDR 336,000 (~SGD 29)</span></div>
+                        <div class="sub-row"><span>💥 Bumper Boat (30 min/unit)</span><span class="sub-price">IDR 200,000 (~SGD 17)</span></div>
+                        <div class="sub-row"><span>🚲 Water Tricycle (30 min/unit)</span><span class="sub-price">IDR 336,000 (~SGD 29)</span></div>
+
+                        <div class="sub-row" style="font-size:0.77rem;font-weight:700;color:#7c3aed;padding-top:8px;padding-bottom:2px;"><span>💆 Spa &amp; Wellness (no discount)</span><span></span></div>
+                        <div class="sub-row"><span>💆 Body Massage</span><span class="sub-price">IDR 600,000–1,000,000/pax</span></div>
+                        <div class="sub-row"><span>✨ Body Treatment</span><span class="sub-price">IDR 1,250,000/pax</span></div>
+                        <div class="sub-row" style="font-size:0.75rem;color:#94a3b8;"><span>↳ <a href="https://online.flippingbook.com/view/66129192/2/" target="_blank" style="color:#0077b6;">View full massage menu</a></span><span></span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tl-item warn">
+                <div class="tl-card warn">
+                    <div class="tl-time">17:30</div>
+                    <div class="tl-title">🌅 Wind-Down + Pack Bags</div>
+                    <div class="tl-desc">Head back to the room and <strong>pack all bags tonight</strong> — no time in the morning tomorrow!</div>
+                    <div class="badges">
+                        <span class="badge b-warn">⚠️ Pack tonight</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-card">
+                    <div class="tl-time">18:00</div>
+                    <div class="tl-title">🍽 Group Dinner</div>
+                    <div class="tl-desc">Last dinner in Bintan — celebrate a great trip!</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ══════════════════ DAY 3 ══════════════════ -->
+    <div id="day3" class="day-view">
+        <div class="alert alert-danger" style="margin: 0 0 16px;">
+            <span class="alert-icon">🚨</span>
+            <div><strong>Ferry departs 11:35 sharp.</strong> Check-out before 12:00 · Transfer ~20 min · Leave resort by 10:45. <strong>Bags must be packed from Sunday night.</strong></div>
+        </div>
+        <div class="timeline">
+
+            <div class="tl-item">
+                <div class="tl-card">
+                    <div class="tl-time">07:00 – 08:30</div>
+                    <div class="tl-title">🍳 Final Breakfast at Natra Bintan</div>
+                    <div class="tl-desc">Last included breakfast. Enjoy it — settle any outstanding charges at the resort front desk after.</div>
+                    <div class="badges"><span class="badge b-included">Included</span></div>
+                </div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-card">
+                    <div class="tl-time">08:30 – 10:00</div>
+                    <div class="tl-title">🏊 Last Swim / Pool Time</div>
+                    <div class="tl-desc">Final dip in the pool before heading home. Bags should already be packed from last night.</div>
+                </div>
+            </div>
+
+            <div class="tl-item warn">
+                <div class="tl-card warn">
+                    <div class="tl-time">10:00 – 10:30</div>
+                    <div class="tl-title">🏨 Check-Out · Natra Bintan</div>
+                    <div class="tl-desc">Settle all outstanding bills (activities are pay-at-hotel). Collect luggage and gather the group at the lobby.</div>
+                    <div class="badges"><span class="badge b-warn">⚠️ Before 12:00</span></div>
+                </div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-card info">
+                    <div class="tl-time">10:45</div>
+                    <div class="tl-title">🚐 Transfer to Bandar Bintan Telani Ferry Terminal</div>
+                    <div class="tl-desc">~20-min drive. Arrive at terminal by 11:10–11:15 to clear check-in.</div>
+                </div>
+            </div>
+
+            <div class="tl-item priority">
+                <div class="tl-card" style="border-left-color: var(--ocean);">
+                    <div class="tl-time">11:35</div>
+                    <div class="tl-title">⛴ Ferry Departs — Bintan → Singapore</div>
+                    <div class="tl-desc">Economy class · Booking Ref <strong>2142797</strong> (14 pax) &amp; <strong>2142801</strong> (5 pax)</div>
+                </div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-card">
+                    <div class="tl-time">13:45</div>
+                    <div class="tl-title">🇸🇬 Arrive Tanah Merah Ferry Terminal, Singapore</div>
+                    <div class="tl-desc">Clear immigration and customs. End of trip — hope it was an amazing one!</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ══════════════════ ACTIVITIES ══════════════════ -->
+    <div id="activities" class="day-view">
+
+        <div class="discount-banner">
+            🎉 <strong>20% Hotel Guest Discount applies to ALL activities.</strong> &nbsp;All prices shown are post-discount. Approx. rate: IDR 11,500 = SGD 1.
+        </div>
+
+        <!-- Priority -->
+        <div class="act-card">
+            <div class="act-card-title">⭐ Priority Activities</div>
+
+            <div class="act-row">
+                <div class="act-icon">🏍</div>
+                <div class="act-info">
+                    <div class="act-name">ATV Off-Road Trail</div>
+                    <div class="act-dur">25 min or 60 min · Per vehicle</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 720,000 / 1,200,000</div>
+                    <div class="ap-sgd">~SGD 63 / ~SGD 104</div>
+                    <div class="ap-before">IDR 900,000 / 1,500,000</div>
+                </div>
+            </div>
+
+            <div class="act-row">
+                <div class="act-icon">🌿</div>
+                <div class="act-info">
+                    <div class="act-name">Mangrove Day Tour</div>
+                    <div class="act-dur">45 min · Per pax</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 184,000</div>
+                    <div class="ap-sgd">~SGD 16/pax</div>
+                    <div class="ap-before">IDR 230,000</div>
+                </div>
+            </div>
+
+            <div class="act-row">
+                <div class="act-icon">🏄</div>
+                <div class="act-info">
+                    <div class="act-name">Water Sport Park</div>
+                    <div class="act-dur">60 min · Per pax · 09:00–18:00</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 256,000</div>
+                    <div class="ap-sgd">~SGD 22/pax</div>
+                    <div class="ap-before">IDR 320,000</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lagoon -->
+        <div class="act-card">
+            <div class="act-card-title">🌊 Lagoon Activities · 09:00–18:00</div>
+
+            <div class="act-row">
+                <div class="act-icon">🎿</div>
+                <div class="act-info">
+                    <div class="act-name">Cable Ski</div>
+                    <div class="act-dur">15 min or 30 min · Per pax</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 320,000 / 544,000</div>
+                    <div class="ap-sgd">~SGD 28 / ~SGD 47</div>
+                    <div class="ap-before">IDR 400,000 / 680,000</div>
+                </div>
+            </div>
+
+            <div class="act-row">
+                <div class="act-icon">🚣</div>
+                <div class="act-info">
+                    <div class="act-name">Cable Tube</div>
+                    <div class="act-dur">7 rounds · Per pax</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 200,000</div>
+                    <div class="ap-sgd">~SGD 17</div>
+                    <div class="ap-before">IDR 250,000</div>
+                </div>
+            </div>
+
+            <div class="act-row">
+                <div class="act-icon">🛶</div>
+                <div class="act-info">
+                    <div class="act-name">Lagoon Kayak</div>
+                    <div class="act-dur">60 min · Per unit</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 336,000</div>
+                    <div class="ap-sgd">~SGD 29</div>
+                    <div class="ap-before">IDR 420,000</div>
+                </div>
+            </div>
+
+            <div class="act-row">
+                <div class="act-icon">🏄</div>
+                <div class="act-info">
+                    <div class="act-name">Stand Up Paddle</div>
+                    <div class="act-dur">30 min · Per unit</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 200,000</div>
+                    <div class="ap-sgd">~SGD 17</div>
+                    <div class="ap-before">IDR 250,000</div>
+                </div>
+            </div>
+
+            <div class="act-row">
+                <div class="act-icon">🚣</div>
+                <div class="act-info">
+                    <div class="act-name">Single Paddle Boat</div>
+                    <div class="act-dur">30 min · Per unit</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 200,000</div>
+                    <div class="ap-sgd">~SGD 17</div>
+                    <div class="ap-before">IDR 250,000</div>
+                </div>
+            </div>
+
+            <div class="act-row">
+                <div class="act-icon">🦢</div>
+                <div class="act-info">
+                    <div class="act-name">Single Float</div>
+                    <div class="act-dur">60 min · Per unit</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 144,000</div>
+                    <div class="ap-sgd">~SGD 13</div>
+                    <div class="ap-before">IDR 180,000</div>
+                </div>
+            </div>
+
+            <div class="act-row">
+                <div class="act-icon">💑</div>
+                <div class="act-info">
+                    <div class="act-name">Couple Float</div>
+                    <div class="act-dur">60 min · Per unit</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 200,000</div>
+                    <div class="ap-sgd">~SGD 17</div>
+                    <div class="ap-before">IDR 250,000</div>
+                </div>
+            </div>
+
+            <div class="act-row">
+                <div class="act-icon">🛝</div>
+                <div class="act-info">
+                    <div class="act-name">Slip &amp; Slide <span style="font-size:0.7rem;background:#dcfce7;color:#166534;padding:2px 7px;border-radius:6px;margin-left:4px;font-weight:700;">Kids-friendly</span></div>
+                    <div class="act-dur">Unlimited 1 day · Per pax</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 160,000</div>
+                    <div class="ap-sgd">~SGD 14</div>
+                    <div class="ap-before">IDR 200,000</div>
+                </div>
+            </div>
+
+            <div class="act-row">
+                <div class="act-icon">🌊</div>
+                <div class="act-info">
+                    <div class="act-name">Giant Stand Up Paddle</div>
+                    <div class="act-dur">30 min · Per unit</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 336,000</div>
+                    <div class="ap-sgd">~SGD 29</div>
+                    <div class="ap-before">IDR 420,000</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Land -->
+        <div class="act-card">
+            <div class="act-card-title">🏍 Land Activities · Day 09:00–18:00 · Night 18:00–21:00</div>
+
+            <div class="act-row">
+                <div class="act-icon">🛵</div>
+                <div class="act-info">
+                    <div class="act-name">3-Wheels E-Scooter</div>
+                    <div class="act-dur">60 min · Per unit · Stable &amp; beginner-friendly, great with kids on board</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 112,000</div>
+                    <div class="ap-sgd">~SGD 10</div>
+                    <div class="ap-before">IDR 140,000</div>
+                </div>
+            </div>
+
+            <div class="act-row">
+                <div class="act-icon">🛵</div>
+                <div class="act-info">
+                    <div class="act-name">2-Wheels E-Scooter</div>
+                    <div class="act-dur">60 min · Per unit</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 176,000</div>
+                    <div class="ap-sgd">~SGD 15</div>
+                    <div class="ap-before">IDR 220,000</div>
+                </div>
+            </div>
+
+            <div class="act-row">
+                <div class="act-icon">🏹</div>
+                <div class="act-info">
+                    <div class="act-name">Archery</div>
+                    <div class="act-dur">20 arrows</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 192,000</div>
+                    <div class="ap-sgd">~SGD 17</div>
+                    <div class="ap-before">IDR 240,000</div>
+                </div>
+            </div>
+
+            <div class="act-row">
+                <div class="act-icon">🚗</div>
+                <div class="act-info">
+                    <div class="act-name">Classic Car</div>
+                    <div class="act-dur">1 round · Per pax</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 64,000</div>
+                    <div class="ap-sgd">~SGD 6</div>
+                    <div class="ap-before">IDR 80,000</div>
+                </div>
+            </div>
+
+            <div class="act-row">
+                <div class="act-icon">🤠</div>
+                <div class="act-info">
+                    <div class="act-name">Rodeo Bull</div>
+                    <div class="act-dur">1 time redemption</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 96,000</div>
+                    <div class="ap-sgd">~SGD 8</div>
+                    <div class="ap-before">IDR 120,000</div>
+                </div>
+            </div>
+
+            <div class="act-row">
+                <div class="act-icon">🎆</div>
+                <div class="act-info">
+                    <div class="act-name">Sky Lantern &amp; Fireworks (Package)</div>
+                    <div class="act-dur">1 package</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 200,000</div>
+                    <div class="ap-sgd">~SGD 17</div>
+                    <div class="ap-before">IDR 250,000</div>
+                </div>
+            </div>
+
+            <div class="act-row">
+                <div class="act-icon">🧨</div>
+                <div class="act-info">
+                    <div class="act-name">Fire Crackers</div>
+                    <div class="act-dur">1 set</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 100,000</div>
+                    <div class="ap-sgd">~SGD 9</div>
+                    <div class="ap-before">IDR 125,000</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kids -->
+        <div class="act-card">
+            <div class="act-card-title">👦 Kids Activities</div>
+
+            <div class="act-row">
+                <div class="act-icon">🏍</div>
+                <div class="act-info">
+                    <div class="act-name">Junior ATV</div>
+                    <div class="act-dur">25 min</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 200,000</div>
+                    <div class="ap-sgd">~SGD 17</div>
+                    <div class="ap-before">IDR 250,000</div>
+                </div>
+            </div>
+
+            <div class="act-row">
+                <div class="act-icon">🏎</div>
+                <div class="act-info">
+                    <div class="act-name">Prince Moto</div>
+                    <div class="act-dur">30 min</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 200,000</div>
+                    <div class="ap-sgd">~SGD 17</div>
+                    <div class="ap-before">IDR 250,000</div>
+                </div>
+            </div>
+
+            <div class="act-row">
+                <div class="act-icon">🎨</div>
+                <div class="act-info">
+                    <div class="act-name">Art &amp; Craft</div>
+                    <div class="act-dur">10 min/item · Colouring, Origami, Clay, Jewellery, Face Painting &amp; more</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 100,000</div>
+                    <div class="ap-sgd">~SGD 9/item</div>
+                    <div class="ap-before">IDR 125,000</div>
+                </div>
+            </div>
+
+            <div class="act-row">
+                <div class="act-icon">⛵</div>
+                <div class="act-info">
+                    <div class="act-name">Family Pedal Boat</div>
+                    <div class="act-dur">30 min · Per unit</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 336,000</div>
+                    <div class="ap-sgd">~SGD 29</div>
+                    <div class="ap-before">IDR 420,000</div>
+                </div>
+            </div>
+
+            <div class="act-row">
+                <div class="act-icon">💥</div>
+                <div class="act-info">
+                    <div class="act-name">Bumper Boat</div>
+                    <div class="act-dur">30 min · Per unit</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 200,000</div>
+                    <div class="ap-sgd">~SGD 17</div>
+                    <div class="ap-before">IDR 250,000</div>
+                </div>
+            </div>
+
+            <div class="act-row">
+                <div class="act-icon">🚲</div>
+                <div class="act-info">
+                    <div class="act-name">Water Tricycle</div>
+                    <div class="act-dur">30 min · Per unit</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 336,000</div>
+                    <div class="ap-sgd">~SGD 29</div>
+                    <div class="ap-before">IDR 420,000</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Organic Park -->
+        <div class="act-card">
+            <div class="act-card-title">
+                🌱 Organic Park Tour
+                <span style="font-size:0.72rem;background:#dcfce7;color:#166534;padding:2px 8px;border-radius:6px;margin-left:8px;font-weight:700;text-transform:none;">Available Sat &amp; Sun only</span>
+            </div>
+            <p style="font-size:0.83rem;color:#64748b;margin-bottom:14px;">Sessions: 09:30 · 11:00 · 13:00 &nbsp;|&nbsp; Guided tour, composting/harvesting, stingless bee honey, tea appreciation</p>
+
+            <div class="act-row">
+                <div class="act-icon">👤</div>
+                <div class="act-info">
+                    <div class="act-name">Adult Admission</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 104,000</div>
+                    <div class="ap-sgd">~SGD 9</div>
+                    <div class="ap-before">IDR 130,000</div>
+                </div>
+            </div>
+
+            <div class="act-row">
+                <div class="act-icon">👦</div>
+                <div class="act-info">
+                    <div class="act-name">Child Admission</div>
+                </div>
+                <div class="act-prices">
+                    <div class="ap-after">IDR 72,000</div>
+                    <div class="ap-sgd">~SGD 6</div>
+                    <div class="ap-before">IDR 90,000</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ══════════════════ GROUP INFO ══════════════════ -->
+    <div id="group" class="day-view">
+        <div class="info-grid">
+
+            <div class="info-card">
+                <h3>Ferry Bookings</h3>
+                <p><strong>Ref 2142797</strong> — 12 adults + 2 children</p>
+                <p style="font-size:0.78rem;color:#64748b;margin-bottom:10px;">LAU KIN LEUNG · SEAH STEPHANIE XIU LIN · TEO KANG LING · LIM YI MIN · POH SHU HUI · NG JONATHAN WEI HAO · TAN GUAN SAN · NEO WEN XIN · CHAN SU ANN · ONG MING HAN · SNG JIA JUN · HUANG YITING · SNG KHLOE YUE EN · SNG KIEREN YI ZHE</p>
+                <p><strong>Ref 2142801</strong> — 2 adults + 3 children</p>
+                <p style="font-size:0.78rem;color:#64748b;">HUANG YILIN · SIAH CHRIS CHUANG HWEE · SIAH LEROY YEE YANG · SIAH LERON YEE LE · SIAH LERAY YEE RUI</p>
+                <br/>
+                <p style="font-size:0.82rem;">🚢 Depart SG: <strong>30 May, 14:00</strong> TMFT → BBT</p>
+                <p style="font-size:0.82rem;">🚢 Return: <strong>1 Jun, 11:35</strong> BBT → TMFT</p>
+            </div>
+
+            <div class="info-card">
+                <h3>Hotel Rooms — 7 Total</h3>
+                <p><strong>5 rooms</strong> (2 adults/room)</p>
+                <p style="font-size:0.8rem;color:#64748b;margin-bottom:10px;">TEO KANG LING · NG JONATHAN · LAU KIN LEUNG · ONG MING HAN · TAN GUAN SAN (+ respective partners)</p>
+                <p><strong>1 room</strong> — HUANG YILIN + SIAH CHRIS</p>
+                <p style="font-size:0.8rem;color:#64748b;margin-bottom:8px;">+ 3 children (aged 6, 5, 1) · Resort staff notified ✓</p>
+                <p><strong>1 room</strong> — HUANG YITING + partner</p>
+                <p style="font-size:0.8rem;color:#64748b;">+ SNG KHLOE &amp; SNG KIEREN</p>
+                <br/>
+                <p style="font-size:0.8rem;color:#16a34a;">✓ Breakfast included both mornings</p>
+            </div>
+
+            <div class="info-card">
+                <h3>Resort Contact</h3>
+                <p><strong>Natra Bintan, A Tribute Portfolio Resort</strong></p>
+                <p style="font-size:0.82rem;color:#64748b;margin-bottom:8px;">Jalan Raya Haji Km 01, Kawasan Pariwisata, Sebong Lagoi, Bintan, Riau Islands 29152</p>
+                <p>📞 +62-627-70692252</p>
+                <br/>
+                <p>Check-in: After <strong>15:00</strong></p>
+                <p>Check-out: Before <strong>12:00</strong></p>
+                <p style="color:#dc2626;font-size:0.82rem;margin-top:6px;">⚠️ Pack Sun night — ferry at 11:35!</p>
+            </div>
+
+            <div class="info-card">
+                <h3>Trip Notes</h3>
+                <ul>
+                    <li>All activity prices shown after <strong>20% hotel guest discount</strong></li>
+                    <li>SGD rates approx. IDR 11,500 = SGD 1</li>
+                    <li>Activities are <strong>pay at hotel</strong> / on-site</li>
+                    <li>Mangrove tour: book ahead for 19 pax</li>
+                    <li>Massage: confirm 2-hr block with resort in advance</li>
+                    <li>Organic Park Tour: Sat &amp; Sun only (09:30/11:00/13:00)</li>
+                    <li>ATV is per vehicle — confirm how many per vehicle</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="section-title" style="margin-top:28px;">All 19 Pax</div>
+        <div class="pax-grid">
+            <span class="pax-pill pax-adult">TEO KANG LING</span>
+            <span class="pax-pill pax-adult">LAU KIN LEUNG</span>
+            <span class="pax-pill pax-adult">SEAH STEPHANIE XIU LIN</span>
+            <span class="pax-pill pax-adult">LIM YI MIN</span>
+            <span class="pax-pill pax-adult">POH SHU HUI</span>
+            <span class="pax-pill pax-adult">NG JONATHAN WEI HAO</span>
+            <span class="pax-pill pax-adult">TAN GUAN SAN</span>
+            <span class="pax-pill pax-adult">NEO WEN XIN</span>
+            <span class="pax-pill pax-adult">CHAN SU ANN</span>
+            <span class="pax-pill pax-adult">ONG MING HAN</span>
+            <span class="pax-pill pax-adult">SNG JIA JUN</span>
+            <span class="pax-pill pax-adult">HUANG YITING</span>
+            <span class="pax-pill pax-adult">HUANG YILIN</span>
+            <span class="pax-pill pax-adult">SIAH CHRIS CHUANG HWEE</span>
+            <span class="pax-pill pax-child">SNG KHLOE YUE EN</span>
+            <span class="pax-pill pax-child">SNG KIEREN YI ZHE</span>
+            <span class="pax-pill pax-child">SIAH LEROY YEE YANG (6)</span>
+            <span class="pax-pill pax-child">SIAH LERON YEE LE (5)</span>
+            <span class="pax-pill pax-child">SIAH LERAY YEE RUI (1)</span>
+        </div>
+        <div style="font-size:0.78rem;color:#64748b;margin-top:8px;">
+            <span style="background:#dbeafe;color:#1e40af;padding:2px 8px;border-radius:6px;margin-right:6px;font-weight:600;">Blue = Adult</span>
+            <span style="background:#dcfce7;color:#166534;padding:2px 8px;border-radius:6px;font-weight:600;">Green = Child</span>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function showView(id, btn) {
+        document.querySelectorAll('.day-view').forEach(v => v.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        btn.classList.add('active');
+    }
+</script>
+
+</body>
+</html>
