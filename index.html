@@ -133,9 +133,12 @@
             box-shadow: 0 0 0 3px #e0f2fe;
             z-index: 1;
         }
-        .tl-item.priority::before { border-color: var(--sunset); box-shadow: 0 0 0 3px #fff3e0; }
+        .tl-item.priority::before { border-color: #16a34a; box-shadow: 0 0 0 3px #dcfce7; }
         .tl-item.massage::before { border-color: var(--purple); box-shadow: 0 0 0 3px #f5f3ff; }
         .tl-item.warn::before { border-color: #f59e0b; box-shadow: 0 0 0 3px #fffbeb; }
+        .tl-item.checkin::before { border-color: #dc2626; box-shadow: 0 0 0 3px #fff1f1; }
+        .tl-item.meal::before { border-color: #ea580c; box-shadow: 0 0 0 3px #fff7ed; }
+        .tl-item.info::before { border-color: var(--ocean); box-shadow: 0 0 0 3px #e0f2fe; }
 
         .tl-card {
             background: white;
@@ -144,11 +147,13 @@
             box-shadow: var(--shadow);
             border-left: 4px solid #e2e8f0;
         }
-        .tl-card.priority { border-left-color: var(--sunset); }
-        .tl-card.massage { border-left-color: var(--purple); background: #faf5ff; }
+        .tl-card.priority { border-left-color: #16a34a; background: #f0fdf4; }
+        .tl-card.massage { border-left-color: var(--purple); background: #f5f0ff; }
         .tl-card.warn { border-left-color: #f59e0b; background: #fffbeb; }
-        .tl-card.info { border-left-color: var(--ocean); }
-        .tl-card.kids { border-left-color: var(--green); }
+        .tl-card.info { border-left-color: var(--ocean); background: #e0f2fe; }
+        .tl-card.kids { border-left-color: var(--green); background: #f0fdf4; }
+        .tl-card.checkin { border-left-color: #dc2626; background: #fff1f1; }
+        .tl-card.meal { border-left-color: #ea580c; background: #fff7ed; }
 
         .tl-time { font-size: 0.72rem; font-weight: 700; color: var(--ocean); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 3px; }
         .tl-title { font-size: 1rem; font-weight: 700; margin-bottom: 3px; }
@@ -301,10 +306,62 @@
         .pax-adult { background: #dbeafe; color: #1e40af; }
         .pax-child { background: #dcfce7; color: #166534; }
 
+        /* ── LUNCH OPTIONS ── */
+        .lunch-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 14px;
+        }
+        .lunch-card {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            background: white;
+        }
+        .lunch-photo-strip {
+            display: flex;
+            gap: 2px;
+            height: 88px;
+            overflow: hidden;
+        }
+        .lunch-photo-strip img {
+            flex: 1;
+            object-fit: cover;
+            min-width: 0;
+        }
+        .lunch-card-body {
+            padding: 10px 12px 12px;
+        }
+        .lunch-card-name {
+            font-size: 0.88rem;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+        .lunch-card-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+        .lunch-map-btn {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--ocean);
+            text-decoration: none;
+            border: 1.5px solid var(--ocean);
+            padding: 4px 10px;
+            border-radius: 999px;
+            transition: all 0.15s;
+        }
+        .lunch-map-btn:hover { background: var(--ocean); color: white; }
+
         @media (max-width: 580px) {
             .hero { padding: 36px 16px 72px; }
             .act-row { gap: 8px; }
             .sub-row { flex-direction: column; align-items: flex-start; gap: 2px; }
+            .lunch-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -336,7 +393,7 @@
     <!-- Warning -->
     <div class="alert alert-danger">
         <span class="alert-icon">🚨</span>
-        <div><strong>Tight Monday morning:</strong> Ferry departs 11:35 but check-out is before 12:00. Transfer takes ~20 min. <strong>Pack bags on Sunday night</strong> and aim to leave the resort by 10:45.</div>
+        <div><strong>Tight Monday morning:</strong> Ferry departs 11:35 but check-out is before 12:00. Transfer takes ~20 min. <strong>Pack bags on Sunday night</strong> and aim to leave the resort by 10:10.</div>
     </div>
 
     <!-- Tabs -->
@@ -376,8 +433,8 @@
                 </div>
             </div>
 
-            <div class="tl-item">
-                <div class="tl-card">
+            <div class="tl-item checkin">
+                <div class="tl-card checkin">
                     <div class="tl-time">15:00</div>
                     <div class="tl-title">🏨 Check-In · Natra Bintan</div>
                     <div class="tl-desc">7 rooms · Guest Room, 1 King, Sofa Bed, Garden View. Drop bags and get settled before heading out.</div>
@@ -429,8 +486,8 @@
                 </div>
             </div>
 
-            <div class="tl-item">
-                <div class="tl-card" style="border-left-color:#c0392b;">
+            <div class="tl-item meal">
+                <div class="tl-card meal">
                     <div class="tl-time">18:00</div>
                     <div class="tl-title">🔥 Weekend BBQ — Patio Restaurant &amp; Bar</div>
                     <div class="tl-desc">Group dinner at Natra Bintan's Patio Restaurant &amp; Bar. Balinese BBQ buffet every Saturday from 18:00. Includes BBQ grills, sides, condiments and dessert.</div>
@@ -446,6 +503,26 @@
                         <div class="sub-row" style="font-size:0.77rem;font-weight:700;color:#c0392b;padding-top:6px;padding-bottom:2px;"><span>🍮 Dessert</span><span></span></div>
                         <div class="sub-row"><span>Dadar Gulung, Klepon, Jaje Pipis, Seasonal Fresh Fruits</span><span></span></div>
                         <div class="sub-row" style="border-top:1px dashed #e2e8f0;margin-top:8px;padding-top:8px;font-weight:700;"><span>IDR 425,000++ / person</span><span class="sub-price">~SGD 37/pax · 19 pax ≈ SGD 700</span></div>
+                        <div class="sub-row" style="padding-top:6px;"><span><a href="https://www.bintan-resorts.com/wp-content/uploads/2025/02/THE-PATIO-RESTAURANT-MENU-X-LOKARASA_compressed.pdf" target="_blank" style="color:#0077b6;font-size:0.8rem;">📄 View full Patio menu (PDF)</a></span><span></span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tl-item massage">
+                <div class="tl-card massage" style="padding:0;overflow:hidden;">
+                    <img src="https://theanmon.com/wp-content/uploads/2023/03/tipi-bar-anmon-resort-in-bintan-4.jpg" alt="Tipi Bar" style="width:100%;height:130px;object-fit:cover;object-position:center 65%;display:block;">
+                    <div style="padding:14px 18px 16px;">
+                        <div class="tl-time">20:30</div>
+                        <div class="tl-title">🍹 Tipi Bar · ANMON Resort</div>
+                        <div class="tl-desc">Open-concept bar with signature cocktails by an award-winning mixologist. Shisha available. ~15 min drive from Natra Bintan.</div>
+                        <div class="badges" style="margin-top:8px;">
+                            <span class="badge b-optional">Open til 10:30pm (Sat)</span>
+                            <span class="badge b-note">Rp 250,000+/pax</span>
+                        </div>
+                        <div style="margin-top:10px;display:flex;gap:14px;">
+                            <a href="https://menu.theanmon.com/tipi-bar-cocktail-menu-digital" target="_blank" style="color:#7c3aed;font-size:0.8rem;font-weight:700;">🍸 Cocktail menu</a>
+                            <a href="https://maps.google.com/?q=Tipi+Bar,ANMON+Resort+Bintan&ll=1.161238,104.33129" target="_blank" style="color:#7c3aed;font-size:0.8rem;font-weight:700;">📍 Open in Maps</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -461,8 +538,8 @@
         </div>
         <div class="timeline">
 
-            <div class="tl-item">
-                <div class="tl-card">
+            <div class="tl-item meal">
+                <div class="tl-card meal">
                     <div class="tl-time">07:30 – 09:00</div>
                     <div class="tl-title">🍳 Breakfast at Natra Bintan</div>
                     <div class="tl-desc">Breakfast included for all rooms (2 guests per room). Fuel up for a full day of activities!</div>
@@ -487,11 +564,42 @@
                 </div>
             </div>
 
-            <div class="tl-item">
-                <div class="tl-card">
+            <div class="tl-item meal">
+                <div class="tl-card meal">
                     <div class="tl-time">12:00 – 13:30</div>
-                    <div class="tl-title">🍜 Lunch Break</div>
-                    <div class="tl-desc">Rest and refuel at Treasure Bay or resort restaurants.</div>
+                    <div class="tl-title">🍜 Lunch — Pick One</div>
+                    <div class="tl-desc">Two options nearby. Head out straight after ATV.</div>
+                    <div class="lunch-grid">
+
+                        <!-- Warung Yeah! -->
+                        <div class="lunch-card">
+                            <div class="lunch-photo-strip">
+                                <img src="https://itin-dev.wanderlogstatic.com/freeImage/RMFDKzAzYKWGoVjHfSJqh7hsKa6lqsZ8" alt="Warung Yeah interior">
+                                <img src="https://itin-dev.wanderlogstatic.com/freeImage/qGaCcf541iYztGerQ2a4CJSDlFY7xPQk" alt="Warung Yeah food">
+                                <img src="https://itin-dev.wanderlogstatic.com/freeImage/r3smLv5Ng3hg482ZCdwg5cHFBQiAI1fn" alt="Warung Yeah dishes">
+                            </div>
+                            <div class="lunch-card-body">
+                                <div class="lunch-card-name">Warung Yeah!</div>
+                                <div class="lunch-card-meta">🚗 ~5 min · Indonesian · Rp 25,000–150,000<br>Open 11am–9pm · ⭐ 4.4 (836)</div>
+                                <a href="https://maps.google.com/?cid=2741802644375527931" target="_blank" class="lunch-map-btn">Open in Maps</a>
+                            </div>
+                        </div>
+
+                        <!-- Bintan 88 Live Seafood -->
+                        <div class="lunch-card">
+                            <div class="lunch-photo-strip">
+                                <img src="https://img02.restaurantguru.com/c1a7-BINTAN-88-LIVE-SEAFOOD-Sebong-Pereh-food.jpg" alt="Bintan 88 food">
+                                <img src="https://img02.restaurantguru.com/c09d-Restaurant-BINTAN-88-LIVE-SEAFOOD-interior.jpg" alt="Bintan 88 interior">
+                                <img src="https://img02.restaurantguru.com/ced2-Restaurant-BINTAN-88-LIVE-SEAFOOD-food.jpg" alt="Bintan 88 seafood">
+                            </div>
+                            <div class="lunch-card-body">
+                                <div class="lunch-card-name">Bintan 88 Live Seafood</div>
+                                <div class="lunch-card-meta">🚗 ~20 min · Zi Char seafood · Local prices<br>Open 10am–11pm · ⭐ 4.3 (32)</div>
+                                <a href="https://www.google.com/maps/place/?q=place_id:ChIJRXe8ekZ_2TERyGLt0mwmWYg" target="_blank" class="lunch-map-btn">Open in Maps</a>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
 
@@ -539,11 +647,38 @@
                 </div>
             </div>
 
-            <div class="tl-item">
-                <div class="tl-card">
+            <div class="tl-item meal">
+                <div class="tl-card meal">
                     <div class="tl-time">18:00</div>
-                    <div class="tl-title">🍽 Group Dinner</div>
+                    <div class="tl-title">🍽 Dinner — Pick One</div>
                     <div class="tl-desc">Last dinner in Bintan — celebrate a great trip!</div>
+                    <div class="lunch-grid">
+
+                        <!-- Kelong Mangrove -->
+                        <div class="lunch-card">
+                            <div class="lunch-photo-strip">
+                                <img src="https://img02.restaurantguru.com/c02f-Kelong-Mangrove-Restaurant-Sebong-Pereh-food.jpg" alt="Kelong Mangrove food">
+                                <img src="https://img02.restaurantguru.com/ce87-Kelong-Mangrove-Restaurant-Sebong-Pereh-interior.jpg" alt="Kelong Mangrove interior">
+                                <img src="https://img02.restaurantguru.com/c943-Kelong-Mangrove-Restaurant-Sebong-Pereh-seafood.jpg" alt="Kelong Mangrove seafood">
+                            </div>
+                            <div class="lunch-card-body">
+                                <div class="lunch-card-name">Kelong Mangrove Restaurant</div>
+                                <div class="lunch-card-meta">🚗 ~20 min + speedboat · Seafood · Rp 250,000+/pax<br>Open 10am–10pm · ⭐ 3.9 (286)</div>
+                                <a href="https://maps.google.com/?q=Kelong+Mangrove+Restaurant,Sebong+Lagoi,Bintan" target="_blank" class="lunch-map-btn">Open in Maps</a>
+                            </div>
+                        </div>
+
+                        <!-- Patio Restaurant -->
+                        <div class="lunch-card">
+                            <div style="height:88px;background:linear-gradient(135deg,#023e8a,#0096c7);display:flex;align-items:center;justify-content:center;color:white;font-size:1.8rem;">🍽</div>
+                            <div class="lunch-card-body">
+                                <div class="lunch-card-name">Patio Restaurant &amp; Bar</div>
+                                <div class="lunch-card-meta">🏨 At resort · Full à la carte menu<br>Open daily · No travel needed</div>
+                                <a href="https://www.bintan-resorts.com/wp-content/uploads/2025/02/THE-PATIO-RESTAURANT-MENU-X-LOKARASA_compressed.pdf" target="_blank" class="lunch-map-btn">View Menu</a>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
 
@@ -565,12 +700,12 @@
     <div id="day3" class="day-view">
         <div class="alert alert-danger" style="margin: 0 0 16px;">
             <span class="alert-icon">🚨</span>
-            <div><strong>Ferry departs 11:35 sharp.</strong> Check-out before 12:00 · Transfer ~20 min · Leave resort by 10:45. <strong>Bags must be packed from Sunday night.</strong></div>
+            <div><strong>Ferry departs 11:35 sharp.</strong> Check-out by 10:00 · Transfer ~20 min · Leave resort by 10:10. <strong>Bags must be packed from Sunday night.</strong></div>
         </div>
         <div class="timeline">
 
-            <div class="tl-item">
-                <div class="tl-card">
+            <div class="tl-item meal">
+                <div class="tl-card meal">
                     <div class="tl-time">07:00 – 08:30</div>
                     <div class="tl-title">🍳 Final Breakfast at Natra Bintan</div>
                     <div class="tl-desc">Last included breakfast. Enjoy it — settle any outstanding charges at the resort front desk after.</div>
@@ -586,9 +721,9 @@
                 </div>
             </div>
 
-            <div class="tl-item warn">
-                <div class="tl-card warn">
-                    <div class="tl-time">10:00 – 10:30</div>
+            <div class="tl-item checkin">
+                <div class="tl-card checkin">
+                    <div class="tl-time">09:30 – 10:00</div>
                     <div class="tl-title">🏨 Check-Out · Natra Bintan</div>
                     <div class="tl-desc">Settle all outstanding bills (activities are pay-at-hotel). Collect luggage and gather the group at the lobby.</div>
                     <div class="badges"><span class="badge b-warn">⚠️ Before 12:00</span></div>
@@ -597,22 +732,22 @@
 
             <div class="tl-item">
                 <div class="tl-card info">
-                    <div class="tl-time">10:45</div>
+                    <div class="tl-time">10:10</div>
                     <div class="tl-title">🚐 Transfer to Bandar Bintan Telani Ferry Terminal</div>
-                    <div class="tl-desc">~20-min drive. Arrive at terminal by 11:10–11:15 to clear check-in.</div>
+                    <div class="tl-desc">~20-min drive. Arrive at terminal by 10:30 to clear check-in.</div>
                 </div>
             </div>
 
-            <div class="tl-item priority">
-                <div class="tl-card" style="border-left-color: var(--ocean);">
+            <div class="tl-item info">
+                <div class="tl-card info">
                     <div class="tl-time">11:35</div>
                     <div class="tl-title">⛴ Ferry Departs — Bintan → Singapore</div>
                     <div class="tl-desc">Economy class · Booking Ref <strong>2142797</strong> (14 pax) &amp; <strong>2142801</strong> (5 pax)</div>
                 </div>
             </div>
 
-            <div class="tl-item">
-                <div class="tl-card">
+            <div class="tl-item info">
+                <div class="tl-card info">
                     <div class="tl-time">13:45</div>
                     <div class="tl-title">🇸🇬 Arrive Tanah Merah Ferry Terminal, Singapore</div>
                     <div class="tl-desc">Clear immigration and customs. End of trip — hope it was an amazing one!</div>
@@ -1009,7 +1144,7 @@
 
             <div class="info-card">
                 <h3>Resort Contact</h3>
-                <p><strong>Natra Bintan, A Tribute Portfolio Resort</strong></p>
+                <p><strong><a href="https://www.natra-bintan.com/" target="_blank" style="color:#0077b6;text-decoration:none;">Natra Bintan, A Tribute Portfolio Resort</a></strong></p>
                 <p style="font-size:0.82rem;color:#64748b;margin-bottom:8px;">Jalan Raya Haji Km 01, Kawasan Pariwisata, Sebong Lagoi, Bintan, Riau Islands 29152</p>
                 <p>📞 +62-627-70692252</p>
                 <br/>
