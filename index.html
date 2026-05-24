@@ -80,6 +80,7 @@
         }
         .alert-warn { background: #fff8e1; border: 1px solid #ffc107; color: #664d03; }
         .alert-danger { background: #fff0f0; border: 1px solid #f87171; color: #7f1d1d; }
+        .alert-info { background: #eff6ff; border: 1px solid #93c5fd; color: #1e3a5f; }
         .alert-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
 
         /* ── TABS ── */
@@ -412,8 +413,8 @@
 
     <!-- Warning -->
     <div class="alert alert-danger">
-        <span class="alert-icon">🚨</span>
-        <div><strong>Tight Monday morning:</strong> Ferry departs 11:35 but check-out is before 12:00. Transfer takes ~20 min. <strong>Pack bags on Sunday night</strong> and aim to leave the resort by 10:10.</div>
+        <span class="alert-icon">💳</span>
+        <div><strong>Bring your credit card.</strong> ATVs, spa sessions, and other resort activities can be paid by card. Keep it handy — you'll need it throughout the trip.</div>
     </div>
 
     <!-- Tabs -->
@@ -427,6 +428,10 @@
 
     <!-- ══════════════════ DAY 1 ══════════════════ -->
     <div id="day1" class="day-view active">
+        <div class="alert alert-danger" style="margin: 0 0 16px;">
+            <span class="alert-icon">⛴️</span>
+            <div><strong>Meet at Tanah Merah Ferry Terminal by 12:00.</strong> Complete check-in and immigration before boarding. Don't be late — the ferry won't wait.</div>
+        </div>
         <div class="timeline">
 
             <div class="tl-item">
@@ -1333,7 +1338,7 @@
         { id: 'yiting-jj',    label: 'Yiting & JJ' },
         { id: 'summer-san',   label: 'Summer & San' },
         { id: 'shuhui-jon',   label: 'Shuhui & Jon' },
-        { id: 'steph-kin',    label: 'Steph & Kin' },
+        { id: 'steph-kin',    label: 'Steph (90min) & Kin (60min)' },
         { id: 'ym-kangling',  label: 'YM & Kang Ling' },
     ];
     const SPA_CAP = { 'sat-3pm': 2, 'sat-430pm': 1, 'sun-2pm': 2, 'sun-330pm': 1 };
