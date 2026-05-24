@@ -150,6 +150,25 @@
         .tl-card.priority { border-left-color: #16a34a; background: #f0fdf4; }
         .tl-card.massage { border-left-color: var(--purple); background: #f5f0ff; }
         .tl-card.warn { border-left-color: #f59e0b; background: #fffbeb; }
+
+        /* ── SPA BOOKING ── */
+        .spa-schedule { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+        .spa-day { flex: 1; min-width: 180px; background: rgba(124,58,237,0.06); border-radius: 10px; padding: 10px 12px; }
+        .spa-day-label { font-size: 0.7rem; font-weight: 700; color: var(--purple); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .spa-slot { padding: 7px 0; border-bottom: 1px solid rgba(124,58,237,0.1); }
+        .spa-slot:last-child { border-bottom: none; }
+        .spa-slot-header { display: flex; align-items: center; gap: 6px; }
+        .spa-slot-time { font-weight: 700; font-size: 0.82rem; color: var(--text); }
+        .spa-slot-cap { font-size: 0.7rem; color: var(--text-muted); }
+        .spa-slot-full .spa-slot-time::after { content: ' · FULL'; color: #dc2626; font-size: 0.68rem; font-weight: 700; }
+        .spa-slot-body { margin-top: 5px; }
+        .spa-slot-assigned { display: flex; flex-direction: column; gap: 2px; }
+        .spa-assigned-name { display: flex; align-items: center; justify-content: space-between; font-size: 0.79rem; font-weight: 600; color: var(--purple); }
+        .spa-remove-btn { background: none; border: none; color: #dc2626; cursor: pointer; font-size: 0.9rem; padding: 0 2px; line-height: 1; font-weight: 700; }
+        .spa-slot-sel { width: 100%; margin-top: 6px; font-size: 0.79rem; padding: 5px 8px; border: 1px dashed rgba(124,58,237,0.4); border-radius: 8px; background: white; color: var(--text-muted); cursor: pointer; }
+        .spa-su-ann { display: flex; align-items: center; justify-content: space-between; padding: 5px 0 0; border-top: 1px dashed rgba(124,58,237,0.2); margin-top: 6px; }
+        .spa-su-ann-name { font-size: 0.79rem; font-weight: 600; color: var(--purple); }
+        .spa-su-ann-meta { font-size: 0.7rem; color: var(--text-muted); }
         .tl-card.info { border-left-color: var(--ocean); background: #e0f2fe; }
         .tl-card.kids { border-left-color: var(--green); background: #f0fdf4; }
         .tl-card.checkin { border-left-color: #dc2626; background: #fff1f1; }
@@ -364,6 +383,7 @@
             .lunch-grid { grid-template-columns: 1fr; }
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -429,7 +449,7 @@
                 <div class="tl-card">
                     <div class="tl-time">14:15 – 15:00</div>
                     <div class="tl-title">🚐 Transfer to Natra Bintan Resort</div>
-                    <div class="tl-desc">~20-min transfer to Jalan Raya Haji Km 01, Kawasan Pariwisata, Sebong Lagoi. Check-in opens at 15:00.</div>
+                    <div class="tl-desc">Resort transport provided by Natra Bintan — look out for the driver at the terminal. ~20-min drive to the resort. Check-in opens at 15:00.</div>
                 </div>
             </div>
 
@@ -472,16 +492,71 @@
 
             <div class="tl-item massage">
                 <div class="tl-card massage">
-                    <div class="tl-time">15:30 – 17:30</div>
-                    <div class="tl-title">💆 Spa &amp; Massage</div>
-                    <div class="tl-desc">Prefer to unwind? Head to the resort spa instead. Book in advance to secure a slot.</div>
-                    <div class="badges">
-                        <span class="badge b-optional">Book in advance</span>
+                    <div class="tl-time">15:00 – 17:30</div>
+                    <div class="tl-title">💆 Spa Sessions (1 hour) · Natra Bintan Spa</div>
+                    <div class="tl-desc">1-hour sessions. Select your slot below — couples book together. Su Ann is confirmed at 4:30pm — portable massage table brought to her room.</div>
+                    <div class="badges" style="margin-bottom:4px;">
+                        <span class="badge b-optional">1 hour/session</span>
+                        <span class="badge" style="background:#f5f0ff;color:#7c3aed;"><a href="https://online.flippingbook.com/view/66129192/2/" target="_blank" style="color:#7c3aed;text-decoration:none;">View massage menu</a></span>
                     </div>
-                    <div class="sub-list">
-                        <div class="sub-row"><span>💆 Body Massage</span><span class="sub-price">IDR 600,000–1,000,000/pax (~SGD 52–87)</span></div>
-                        <div class="sub-row"><span>✨ Body Treatment</span><span class="sub-price">IDR 1,250,000/pax (~SGD 109)</span></div>
-                        <div class="sub-row" style="font-size:0.75rem;color:#94a3b8;"><span>↳ <a href="https://online.flippingbook.com/view/66129192/2/" target="_blank" style="color:#0077b6;">View full massage menu</a></span><span></span></div>
+
+                    <!-- Slot schedule with inline dropdowns -->
+                    <div class="spa-schedule">
+                        <div class="spa-day">
+                            <div class="spa-day-label">📅 Sat 30 May · 7 pax</div>
+                            <div class="spa-slot" id="slot-sat-3pm">
+                                <div class="spa-slot-header">
+                                    <span class="spa-slot-time">3:00pm</span>
+                                    <span class="spa-slot-cap">2 rooms · 2 couples</span>
+                                </div>
+                                <div class="spa-slot-body">
+                                    <div class="spa-slot-assigned" id="assigned-sat-3pm"></div>
+                                    <select class="spa-slot-sel" id="sel-sat-3pm" onchange="spaAssign('sat-3pm',this)">
+                                        <option value="">+ add couple</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="spa-slot spa-slot-full" id="slot-sat-430pm">
+                                <div class="spa-slot-header">
+                                    <span class="spa-slot-time">4:30pm</span>
+                                    <span class="spa-slot-cap">1 room · full</span>
+                                </div>
+                                <div class="spa-su-ann">
+                                    <span class="spa-su-ann-name">Su Ann</span>
+                                    <span class="spa-su-ann-meta">Portable table at your room · 1 pax · confirmed ✓</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="spa-day">
+                            <div class="spa-day-label">📅 Sun 31 May · 6 pax</div>
+                            <div class="spa-slot" id="slot-sun-2pm">
+                                <div class="spa-slot-header">
+                                    <span class="spa-slot-time">2:00pm</span>
+                                    <span class="spa-slot-cap">2 rooms · 2 couples</span>
+                                </div>
+                                <div class="spa-slot-body">
+                                    <div class="spa-slot-assigned" id="assigned-sun-2pm"></div>
+                                    <select class="spa-slot-sel" id="sel-sun-2pm" onchange="spaAssign('sun-2pm',this)">
+                                        <option value="">+ add couple</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="spa-slot" id="slot-sun-330pm">
+                                <div class="spa-slot-header">
+                                    <span class="spa-slot-time">3:30pm</span>
+                                    <span class="spa-slot-cap">1 room · 1 couple</span>
+                                </div>
+                                <div class="spa-slot-body">
+                                    <div class="spa-slot-assigned" id="assigned-sun-330pm"></div>
+                                    <select class="spa-slot-sel" id="sel-sun-330pm" onchange="spaAssign('sun-330pm',this)">
+                                        <option value="">+ add couple</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align:right;margin-top:8px;">
+                        <button onclick="spaReset()" style="background:none;border:none;color:#aaa;font-size:0.7rem;cursor:pointer;padding:2px 0;">reset all slots</button>
                     </div>
                 </div>
             </div>
@@ -572,12 +647,23 @@
                 <div class="tl-card priority">
                     <div class="tl-time">09:00 – 11:00</div>
                     <div class="tl-title">🏍 ATV Off-Road Trail</div>
-                    <div class="tl-desc">Start the day with a thrilling ATV ride through the off-road trails. Book multiple vehicles for the group.</div>
-                    <div class="badges">
+                    <div class="badges" style="margin-bottom:10px;">
                         <span class="badge b-priority">⭐ Priority</span>
                         <span class="badge b-note">Per vehicle, not per pax</span>
                     </div>
-                    <div class="price-pill">
+                    <div style="display:flex;flex-direction:column;gap:10px;">
+                        <div style="background:rgba(196,98,45,0.07);border-radius:10px;padding:10px 12px;">
+                            <div style="font-size:0.72rem;font-weight:700;color:var(--terracotta);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px;">Batch 1 · 9:00–9:30am · Plains Trail</div>
+                            <div style="font-size:0.82rem;color:var(--text-main);margin-bottom:4px;">YT, YL, Khloe, Leroy</div>
+                            <div style="font-size:0.77rem;color:var(--text-muted);">2 Adult ATVs · 2 Kids ATVs</div>
+                        </div>
+                        <div style="background:rgba(42,107,94,0.07);border-radius:10px;padding:10px 12px;">
+                            <div style="font-size:0.72rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px;">Batch 2 · 10:00–11:00am · Forest Trail</div>
+                            <div style="font-size:0.82rem;color:var(--text-main);margin-bottom:4px;">JJ, Summer, San, SH, Jon, Su Ann, MH, YM, KL</div>
+                            <div style="font-size:0.77rem;color:var(--text-muted);">9 Adult ATVs</div>
+                        </div>
+                    </div>
+                    <div class="price-pill" style="margin-top:10px;">
                         60 min/vehicle: IDR 1,500,000 (~SGD 130) &nbsp;|&nbsp; 25 min/vehicle: IDR 900,000 (~SGD 78)
                     </div>
                 </div>
@@ -587,7 +673,7 @@
                 <div class="tl-card meal">
                     <div class="tl-time">12:00 – 13:30</div>
                     <div class="tl-title">🍜 Lunch — Pick One</div>
-                    <div class="tl-desc">Two options nearby. Head out straight after ATV.</div>
+                    <div class="tl-desc">Three options — head out straight after ATV or stay at resort.</div>
                     <div class="lunch-grid">
 
                         <!-- Warung Yeah! -->
@@ -615,6 +701,16 @@
                                 <div class="lunch-card-name">Bintan 88 Live Seafood</div>
                                 <div class="lunch-card-meta">🚗 ~20 min · Zi Char seafood · Local prices<br>Open 10am–11pm · ⭐ 4.3 (32)</div>
                                 <a href="https://www.google.com/maps/place/?q=place_id:ChIJRXe8ekZ_2TERyGLt0mwmWYg" target="_blank" class="lunch-map-btn">Open in Maps</a>
+                            </div>
+                        </div>
+
+                        <!-- Patio Restaurant -->
+                        <div class="lunch-card">
+                            <div style="height:88px;background:linear-gradient(135deg,#023e8a,#0096c7);display:flex;align-items:center;justify-content:center;color:white;font-size:1.8rem;">🍽</div>
+                            <div class="lunch-card-body">
+                                <div class="lunch-card-name">Patio Restaurant &amp; Bar</div>
+                                <div class="lunch-card-meta">🏨 At resort · Full à la carte menu<br>Open daily · No travel needed</div>
+                                <a href="https://online.flippingbook.com/view/1066380615/" target="_blank" class="lunch-map-btn">View Menu</a>
                             </div>
                         </div>
 
@@ -666,10 +762,47 @@
                 </div>
             </div>
 
+            <div class="tl-item massage">
+                <div class="tl-card massage">
+                    <div class="tl-time">14:00 – 16:30</div>
+                    <div class="tl-title">💆 Spa Sessions (1 hour) · Natra Bintan Spa</div>
+                    <div class="tl-desc">Pre-booked massage sessions for today. Head to the spa at your confirmed time.</div>
+                    <div class="spa-schedule">
+                        <div class="spa-day" style="flex:1;min-width:0;">
+                            <div class="spa-day-label">📅 Sun 31 May · 6 pax</div>
+                            <div class="spa-slot" id="d2-slot-sun-2pm">
+                                <div class="spa-slot-header">
+                                    <span class="spa-slot-time">2:00pm</span>
+                                    <span class="spa-slot-cap">2 rooms · 2 couples</span>
+                                </div>
+                                <div class="spa-slot-body">
+                                    <div class="spa-slot-assigned" id="d2-assigned-sun-2pm"></div>
+                                    <select class="spa-slot-sel" id="d2-sel-sun-2pm" onchange="spaAssign('sun-2pm',this)">
+                                        <option value="">+ add couple</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="spa-slot" id="d2-slot-sun-330pm">
+                                <div class="spa-slot-header">
+                                    <span class="spa-slot-time">3:30pm</span>
+                                    <span class="spa-slot-cap">1 room · 1 couple</span>
+                                </div>
+                                <div class="spa-slot-body">
+                                    <div class="spa-slot-assigned" id="d2-assigned-sun-330pm"></div>
+                                    <select class="spa-slot-sel" id="d2-sel-sun-330pm" onchange="spaAssign('sun-330pm',this)">
+                                        <option value="">+ add couple</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="tl-item meal">
                 <div class="tl-card meal">
                     <div class="tl-time">18:00</div>
-                    <div class="tl-title">🍽 Dinner — Pick One</div>
+                    <div class="tl-title">🍽 Dinner — Kelong Mangrove Restaurant</div>
                     <div class="tl-desc">Last dinner in Bintan — celebrate a great trip!</div>
                     <div class="lunch-grid">
 
@@ -684,16 +817,6 @@
                                 <div class="lunch-card-name">Kelong Mangrove Restaurant</div>
                                 <div class="lunch-card-meta">🚗 ~20 min + speedboat · Seafood · Rp 250,000+/pax<br>Open 10am–10pm · ⭐ 3.9 (286)</div>
                                 <a href="https://maps.google.com/?q=Kelong+Mangrove+Restaurant,Sebong+Lagoi,Bintan" target="_blank" class="lunch-map-btn">Open in Maps</a>
-                            </div>
-                        </div>
-
-                        <!-- Patio Restaurant -->
-                        <div class="lunch-card">
-                            <div style="height:88px;background:linear-gradient(135deg,#023e8a,#0096c7);display:flex;align-items:center;justify-content:center;color:white;font-size:1.8rem;">🍽</div>
-                            <div class="lunch-card-body">
-                                <div class="lunch-card-name">Patio Restaurant &amp; Bar</div>
-                                <div class="lunch-card-meta">🏨 At resort · Full à la carte menu<br>Open daily · No travel needed</div>
-                                <a href="https://online.flippingbook.com/view/1066380615/" target="_blank" class="lunch-map-btn">View Menu</a>
                             </div>
                         </div>
 
@@ -1224,6 +1347,97 @@
         document.getElementById(id).classList.add('active');
         btn.classList.add('active');
     }
+
+    // ── SPA BOOKING ──
+    const SPA_COUPLES = [
+        { id: 'yiling-chris', label: 'Yiling & Chris' },
+        { id: 'yiting-jj',    label: 'Yiting & JJ' },
+        { id: 'summer-san',   label: 'Summer & San' },
+        { id: 'shuhui-jon',   label: 'Shuhui & Jon' },
+        { id: 'steph-kin',    label: 'Steph & Kin' },
+        { id: 'ym-kangling',  label: 'YM & Kang Ling' },
+    ];
+    const SPA_CAP = { 'sat-3pm': 2, 'sat-430pm': 1, 'sun-2pm': 2, 'sun-330pm': 1 };
+
+    const _sb = supabase.createClient(
+        'https://pirxfzwhjfedheeasenc.supabase.co',
+        'sb_publishable_AjzeYBZAEOsZRWeu5Sj1eA_Mvfwbqsb'
+    );
+
+    function spaGetSlots(stored) {
+        const slots = { 'sat-3pm': [], 'sat-430pm': [], 'sun-2pm': [], 'sun-330pm': [] };
+        SPA_COUPLES.forEach(c => { if (stored[c.id]) slots[stored[c.id]].push(c.label); });
+        return slots;
+    }
+
+    async function spaLoad() {
+        const { data, error } = await _sb.from('bintan_spa_2026').select('couple_id, slot_id');
+        if (error) { console.error('spa load error', error); return; }
+        const stored = {};
+        (data || []).forEach(row => { stored[row.couple_id] = row.slot_id; });
+        spaRender(stored);
+    }
+
+    async function spaAssign(slotId, sel) {
+        const coupleId = sel.value;
+        if (!coupleId) return;
+        sel.disabled = true;
+        await _sb.from('bintan_spa_2026').upsert({ couple_id: coupleId, slot_id: slotId, updated_at: new Date().toISOString() });
+        sel.disabled = false;
+        await spaLoad();
+    }
+
+    async function spaRemove(coupleId) {
+        await _sb.from('bintan_spa_2026').delete().eq('couple_id', coupleId);
+        await spaLoad();
+    }
+
+    async function spaReset() {
+        if (!confirm('Clear all spa slot selections?')) return;
+        await _sb.from('bintan_spa_2026').delete().neq('couple_id', '');
+        await spaLoad();
+    }
+
+    function spaRender(stored) {
+        const slots = spaGetSlots(stored);
+        const unassigned = SPA_COUPLES.filter(c => !stored[c.id]);
+
+        Object.keys(SPA_CAP).forEach(slotId => {
+            const names = slots[slotId];
+            const isFull = names.length >= SPA_CAP[slotId];
+            const nameHtml = names.map(name => {
+                const c = SPA_COUPLES.find(c => c.label === name);
+                return `<div class="spa-assigned-name">${name}${c ? `<button class="spa-remove-btn" onclick="spaRemove('${c.id}')">×</button>` : ''}</div>`;
+            }).join('');
+
+            ['', 'd2-'].forEach(prefix => {
+                const slotEl = document.getElementById(prefix + 'slot-' + slotId);
+                if (slotEl) slotEl.classList.toggle('spa-slot-full', isFull);
+
+                const assignedEl = document.getElementById(prefix + 'assigned-' + slotId);
+                if (assignedEl) assignedEl.innerHTML = nameHtml;
+
+                const sel = document.getElementById(prefix + 'sel-' + slotId);
+                if (!sel) return;
+                sel.style.display = isFull ? 'none' : '';
+                sel.innerHTML = '<option value="">+ add couple</option>';
+                unassigned.forEach(c => {
+                    const opt = document.createElement('option');
+                    opt.value = c.id;
+                    opt.textContent = c.label;
+                    sel.appendChild(opt);
+                });
+                sel.value = '';
+            });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        spaLoad();
+        _sb.channel('spa-changes')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'bintan_spa_2026' }, () => spaLoad())
+            .subscribe();
+    });
 </script>
 
 </body>
